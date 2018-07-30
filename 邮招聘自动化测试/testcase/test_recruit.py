@@ -1,0 +1,75 @@
+import time
+import unittest
+from selenium import webdriver
+
+class recruit(unittest.TestCase):
+    def setUp(self):
+        self.driver=webdriver.Chrome();
+        self.driver.get("http://localhost:8080")
+        self.driver.add_cookie({'name':'username','value':'12'})
+        self.driver.get("http://localhost:8080")
+        self.driver.implicitly_wait(8)
+        self.driver.maximize_window()
+    def tearDown(self):
+        self.driver.quit()
+    def test_addRecruit(self):
+        self.driver.find_element_by_xpath('//*[@id="information"]/div/div/div[3]/div[2]/ul/li[3]/div/a/i').click()
+        self.driver.find_element_by_name('campanyName').send_keys('百信银行')
+        self.driver.find_element_by_name('treatment').send_keys('平台好,福利全,挑战多,成长快')
+        self.driver.find_element_by_name('describe').send_keys('JAVA工程师')
+        self.driver.find_element_by_name('requirement').send_keys(' 2年及以上使用JAVA开发的经验，对于你用过的开源框架，能了解到它的原理和机制；\n了解分布式系统的设计和应用，熟悉分布式（hadoop）、缓存、消息等机制；能对分布式常用技术进行合理应用者优先；')
+        #self.driver.find_element_by_name('interviewDate').click()
+        self.driver.find_element_by_name('interviewDate').send_keys("0020180717")
+        self.driver.find_element_by_name('place').send_keys("上海 - 普陀区 - 长征 - 金沙江路1518弄近铁城市广场4楼401室")
+        self.driver.find_element_by_name('phone').send_keys("12345678901")
+       # self.driver.find_element_by_name('endDate').click()
+        self.driver.find_element_by_name('endDate').send_keys("0020180716")
+        self.driver.find_element_by_name('workplace').send_keys("上海 - 普陀区 - 长征 - 金沙江路1518弄近铁城市广场4楼401室")
+        self.driver.find_element_by_name('publisher').send_keys("技术部经理")
+        self.driver.find_element_by_xpath(u'//*[@id="add"]/div/form/div[2]/input').click()
+        time.sleep(1)
+        self.driver.switch_to_alert().accept()
+        time.sleep(1)
+        self.assertEqual(self.driver.find_element_by_xpath('/html/body/div[5]/div[2]/div/table/tbody/tr[1]/td[1]').text,'百信银行')
+    def test_changeRecruittreatment(self):
+        self.driver.find_element_by_xpath('//*[@id="information"]/div/div/div[3]/div[2]/ul/li[1]/div/a/i').click()
+        self.driver.find_element_by_xpath('/html/body/div[5]/div[2]/div/table/tbody/tr[1]/td[7]/a[1]').click()
+        self.driver.find_element_by_name('describe').clear()
+        self.driver.find_element_by_name('describe').send_keys('测试工程师')
+        self.driver.find_element_by_xpath('//*[@id="add"]/div/form/div[2]/input').click()
+        self.driver.switch_to_alert().accept()
+        time.sleep(1)
+        self.assertEqual(self.driver.find_element_by_xpath('/html/body/div[5]/div[2]/div/table/tbody/tr[1]/td[2]').text,'测试工程师')
+    def test_changeRecruitcampanyName(self):
+        self.driver.find_element_by_xpath('//*[@id="information"]/div/div/div[3]/div[2]/ul/li[1]/div/a/i').click()
+        self.driver.find_element_by_xpath('/html/body/div[5]/div[2]/div/table/tbody/tr[1]/td[7]/a[1]').click()
+        self.driver.find_element_by_name('campanyName').clear()
+        self.driver.find_element_by_name('campanyName').send_keys('腾讯公司')
+        self.driver.find_element_by_xpath('//*[@id="add"]/div/form/div[2]/input').click()
+        self.driver.switch_to_alert().accept()
+        time.sleep(1)
+        self.assertEqual(self.driver.find_element_by_xpath('/html/body/div[5]/div[2]/div/table/tbody/tr[1]/td[1]').text,'腾讯公司')
+    def test_changeRecruitinterviewDate(self):
+        self.driver.find_element_by_xpath('//*[@id="information"]/div/div/div[3]/div[2]/ul/li[1]/div/a/i').click()
+        self.driver.find_element_by_xpath('/html/body/div[5]/div[2]/div/table/tbody/tr[1]/td[7]/a[1]').click()
+        self.driver.find_element_by_name('interviewDate').clear()
+        self.driver.find_element_by_name('interviewDate').send_keys('2018-07-27')
+        self.driver.find_element_by_xpath('//*[@id="add"]/div/form/div[2]/input').click()
+        self.driver.switch_to_alert().accept()
+        time.sleep(1)
+        self.assertEqual(self.driver.find_element_by_xpath('/html/body/div[5]/div[2]/div/table/tbody/tr[1]/td[3]').text,'2018-07-27')
+    def test_changeRecruitphone(self):
+        self.driver.find_element_by_xpath('//*[@id="information"]/div/div/div[3]/div[2]/ul/li[1]/div/a/i').click()
+        self.driver.find_element_by_xpath('/html/body/div[5]/div[2]/div/table/tbody/tr[1]/td[7]/a[1]').click()
+        self.driver.find_element_by_name('phone').clear()
+        self.driver.find_element_by_name('phone').send_keys('18875141272')
+        self.driver.find_element_by_xpath('//*[@id="add"]/div/form/div[2]/input').click()
+        self.driver.switch_to_alert().accept()
+        time.sleep(1)
+        self.assertEqual(self.driver.find_element_by_xpath('/html/body/div[5]/div[2]/div/table/tbody/tr[1]/td[5]').text,'18875141272')
+    def test_deleteRecruit(self):
+        self.driver.find_element_by_xpath('//*[@id="information"]/div/div/div[3]/div[2]/ul/li[1]/div/a/i').click()
+        self.driver.find_element_by_xpath('/html/body/div[5]/div[2]/div/table/tbody/tr[1]/td[7]/a[2]').click()
+        self.driver.switch_to_alert().accept()
+        time.sleep(1)
+        self.assertNotEqual(self.driver.find_element_by_xpath('/html/body/div[5]/div[2]/div/table/tbody/tr[1]/td[2]').text,'测试工程师')
